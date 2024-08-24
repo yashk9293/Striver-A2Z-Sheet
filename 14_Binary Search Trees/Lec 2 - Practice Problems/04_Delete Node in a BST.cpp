@@ -1,9 +1,9 @@
-// Question Link :- 
+// Question Link :- https://leetcode.com/problems/delete-node-in-a-bst/description/
 // Delete Node in a BST
 
 // Approach - 1 (Recursion)
-// T.C = O()
-// S.C = O()
+// T.C = O(N)
+// S.C = O(N)
 class Solution {
 public:
     int findmax(TreeNode* root, int currentMax) {
@@ -45,8 +45,8 @@ public:
 
 
 // Approach - 2
-// T.C = O()
-// S.C = O()
+// T.C = O(N) + O(N) + O(N)
+// S.C = O(N)
 class Solution {
 public:
     void inOrder(vector<int>&ans, TreeNode* root){
