@@ -29,12 +29,10 @@ public:
                 root->val = v;   //  replace of key
                 // uske baad jisko tm max khoja hai usko remove kr do root->left me se..kyoki wo 2 jagah hai...
                 root->left = deleteNode(root->left, v);   
-            } else if (root->left != NULL) {
-               return root->left;
-            } else if (root->right != NULL) {
-                return root->right;   
-            } else {
-                return NULL;
+            } else if (root->left == NULL) {
+               return root->right;
+            } else if (root->right == NULL) {
+                return root->left;   
             }
         }
         return root;
