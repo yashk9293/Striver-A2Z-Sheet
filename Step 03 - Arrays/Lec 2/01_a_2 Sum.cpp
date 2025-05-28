@@ -29,16 +29,15 @@ public:
 // S.C = O(N)
 class Solution {
 public:
-    vector<int> twoSum(vector<int>& arr, int target) {
+    vector<int> twoSum(vector<int>& nums, int target) {
         unordered_map<int, int> mpp;
-        for (int i = 0; i < arr.size(); i++) {
-            int num = arr[i];
-            int moreNeeded = target - num;
-            if (mpp.find(moreNeeded) != mpp.end()) {
-                return {mpp[moreNeeded], i};
+        for(int i=0; i<nums.size(); i++) {
+            int remaining = target - nums[i];
+            if(mpp.find(remaining) != mpp.end()) {
+                return {i, mpp[remaining]};
             }
-            mpp[num] = i;
+            mpp[nums[i]] = i;
         }
-        return { -1, -1};
+        return {-1, -1};
     }
 };

@@ -13,7 +13,7 @@ class Solution {
         for(int i=0; i<n; i++) {
             bool flag = true;
             for(int j=i+1; j<n; j++) {
-                if(arr[i] <= arr[j]) {
+                if(arr[i] < arr[j]) {
                     flag = false;
                     break;
                 }

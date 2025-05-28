@@ -37,3 +37,9 @@ int main() {
 	
 	return 0;
 }
+
+
+
+// Output :-
+// Ceil = 7
+// Floor = 4

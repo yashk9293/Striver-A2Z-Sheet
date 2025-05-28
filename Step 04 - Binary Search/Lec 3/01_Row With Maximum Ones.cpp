@@ -30,7 +30,7 @@ public:
 
 
 // If the matrix was sorted row wise, then it would have taken O(nlogn) time.
-// T.C = O(n^2*log(n))
+// T.C = O(n*log(n))
 // S.C = O(1)
 class Solution {
 public:
