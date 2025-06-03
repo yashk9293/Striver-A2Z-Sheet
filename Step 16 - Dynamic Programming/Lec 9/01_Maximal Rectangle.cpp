@@ -2,78 +2,67 @@
 // Question Link :- https://practice.geeksforgeeks.org/problems/max-rectangle/1
 // Maximal Rectangle
 
-// T.C = O(n*m)
+// T.C = O(m*n) + O(m*n) ~ O(m*n)
 // S.C = O(m)
 class Solution{
 public:
+    vector<int> _NSL(vector<int> &arr, int n) {
+        stack<int> st;
+        vector<int> v(n, -1);
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() && arr[st.top()] >= arr[i]) {
+                st.pop();
+            }
+            if (!st.empty()) {
+                v[i] = st.top();
+            }
+            st.push(i);
+        }
+        return v;
+    }
+    vector<int> _NSR(vector<int> &arr, int n) {
+        stack<int> st;
+        vector<int> v(n, n);
+        for (int i = n - 1; i >= 0; i--) {
+            while (!st.empty() && arr[st.top()] > arr[i]) {
+                st.pop();
+            }
+            if (!st.empty()) {
+                v[i] = st.top();
+            }
+            st.push(i);
+        }
+        return v;
+    }
+
     int largestRectangleArea(vector<int> &heights) {
         int n = heights.size();
-        vector<int> left, right;
-        stack<pair<int, int>> s1, s2;
-        // nearest smaller to right
-        for (int i = 0; i < n; i++) {
-            if (s1.size() == 0) {
-                left.push_back(-1);
-            }
-            else if (s1.size() > 0 && s1.top().first < heights[i]) {
-                left.push_back(s1.top().second);
-            }
-            else if (s1.size() > 0 && s1.top().first >= heights[i]) {
-                while (s1.size() > 0 && s1.top().first >= heights[i]) {
-                    s1.pop();
-                }
-                if (s1.size() == 0) {
-                    left.push_back(-1);
-                }
-                else {
-                    left.push_back(s1.top().second);
-                }
-            }
-            s1.push({heights[i], i});
-        }
-        // nearest smaller to right
-        for (int i = n - 1; i >= 0; i--) {
-            if (s2.size() == 0) {
-                right.push_back(n);
-            }
-            else if (s2.size() > 0 && s2.top().first < heights[i]) {
-                right.push_back(s2.top().second);
-            }
-            else if (s2.size() > 0 && s2.top().first >= heights[i]) {
-                while (s2.size() > 0 && s2.top().first >= heights[i]) {
-                    s2.pop();
-                }
-                if (s2.size() == 0) {
-                    right.push_back(n);
-                }
-                else {
-                    right.push_back(s2.top().second);
-                }
-            }
-            s2.push({heights[i], i});
-        }
-        reverse(right.begin(), right.end());       // reverse
+        vector<int> NSL = _NSL(heights, n);
+        vector<int> NSR = _NSR(heights, n);
 
         int mah = INT_MIN;
         for (long long i = 0; i < n; i++) {
-            int width = right[i] - left[i] - 1;
+            int width = NSR[i] - NSL[i] - 1;
             int length = heights[i];
-            mah = max(m, width * length);       // taking max after finding area
+            mah = max(mah, width * length);       // taking max after finding area
         }
         return mah;
     }
 
     int maximalRectangle(vector<vector<char>> &matrix) {
         int m = matrix.size();
-        int n = matrix[0].size(), result = 0;
+        int n = matrix[0].size();
+        
+        int result = 0;
         vector<int> histogram(n, 0);
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (matrix[i][j] == '1')
+                if (matrix[i][j] == '1') {
                     histogram[j] += 1;
-                else
+                } else {
                     histogram[j] = 0;
+                }
             }
             result = max(result, largestRectangleArea(histogram));
         }

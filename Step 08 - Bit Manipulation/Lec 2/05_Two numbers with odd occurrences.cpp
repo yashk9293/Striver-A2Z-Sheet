@@ -1,26 +1,56 @@
-// Question Link :- https://www.geeksforgeeks.org/problems/two-numbers-with-odd-occurrences5846/1
 // Question Link :- https://leetcode.com/problems/single-number-iii/
-// Two numbers with odd occurrences
+// Single Number III
+
+// Similar question :- https://www.geeksforgeeks.org/problems/two-numbers-with-odd-occurrences5846/1
 
 
-// Approach - 1 (hashing)
+// Approach - 1 (Brute Force)
+// T.C = O(n^2)
+// S.C = O(1)
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<int> result;
+        int n = nums.size();
+        
+        int i=0;
+        while(i < n) {
+            // If it's the last element or not equal to the next one
+            if (i == n - 1 || nums[i] != nums[i + 1]) {
+                result.push_back(nums[i]);
+                i += 1;
+            } else {
+                i += 2;  // Skip the duplicate pair
+            }
+
+            if (result.size() == 2) break;
+        }
+        return result;
+    }
+};
+
+
+
+// Approach - 2 (hashing)
 // T.C = O(n)
 // S.C = O(n)
 class Solution {
-    public:
-    vector<long long int> twoOddNum(long long int Arr[], long long int N) {
-        vector<long long int> ans;
-        unordered_map<int, int> mpp;
-        for(int i=0; i<N; i++) {
-            mpp[Arr[i]]++;
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        unordered_map<int, int> freq;
+        for (int num : nums) {
+            freq[num]++;
         }
-        for(auto it: mpp) {
-            if(it.second%2 == 1) {
-                ans.push_back(it.first);
+        vector<int> ans;
+        for (auto& entry : freq) {
+            if (entry.second == 1) {
+                ans.push_back(entry.first);
             }
         }
-        if(ans[0] < ans[1]) {
-            return {ans[1], ans[0]};
+
+        if (ans[0] > ans[1]) {
+            swap(ans[0], ans[1]);
         }
         return ans;
     }
@@ -29,33 +59,32 @@ class Solution {
 
 
 
-// Approach - 2 (bit manipulation)
+
+// Approach - 3 (Optimal Solution)
 // T.C = O(n)
 // S.C = O(1)
-class Solution{
-    public:
-    vector<long long int> twoOddNum(long long int Arr[], long long int N){
-        // Step 1: Xor all the elements
-        long xorr = 0;
-        for(int i=0; i<N; i++) {
-            xorr = xorr ^ Arr[i];
-        }
-        // Step 2: Find the rightmost set bit
-        int rightMost = (xorr & xorr - 1) ^ xorr;
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        long long xorr = 0;
 
-        // Step 3: Store elements with rightmost set bit set into b1 and 0 into b2
-        long long int b1 = 0, b2 = 0;
-        for(int i=0; i<N; i++){
-            if(Arr[i] & rightMost) {
-                b1 ^= Arr[i];
+        for(int &num : nums) {
+            xorr ^= num;
+        }
+        
+        //mask -> right most set bit search 
+        int mask = (xorr & (xorr-1)) ^ xorr;
+
+        int groupA = 0, groupB = 0;
+
+        for(int &num : nums) {
+            if(num & mask) {
+                groupA ^= num;
             } else {
-                b2 ^= Arr[i];
+                groupB ^= num;
             }
         }
-        if(b1 > b2) {
-            return {b1, b2};
-        }
-        return {b2, b1};
+        return {groupA, groupB};
     }
 };
 

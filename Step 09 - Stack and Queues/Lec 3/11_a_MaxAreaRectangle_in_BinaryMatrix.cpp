@@ -12,7 +12,7 @@ public:
         int n = heights.size();
         vector<int> left(n, -1);
         vector<int> right(n, n);
-        // nearest smaller to right
+        // nearest smaller to left
         for (int i = 0; i < n; i++) {
             for (int j = i-1; j >= 0; j--) {
                 if(heights[j] < heights[i]) {
